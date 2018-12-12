@@ -39,9 +39,9 @@ public class DateCalculator {
 		}
 		// 이번달 전 까지 합산
 		for(int i = 1; i < this.month; i++) {
-			if(month == 4 || month == 6 || month == 9 || month == 11)
+			if(i == 4 || i == 6 || i == 9 || i == 11)
 				sumDays += 30;
-			else if(month == 2) {
+			else if(i == 2) {
 				if(isLeapYear(this.year))
 					sumDays += 29;
 				else
