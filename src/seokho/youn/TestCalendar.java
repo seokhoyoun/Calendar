@@ -16,64 +16,33 @@ public class TestCalendar {
 		String year = sc.next();
 		System.out.print("month : ");
 		String month = sc.next();
-		System.out.print("day : ");
-		String day = sc.next();
 		
 
-		/*now.set(now.YEAR, Integer.parseInt(year));
+		now.set(now.YEAR, Integer.parseInt(year));
 		now.set(now.MONTH, Integer.parseInt(month)-1);
-		now.set(now.DATE, Integer.parseInt(day));*/
-		now.set(Integer.parseInt(year), Integer.parseInt(month)-1, Integer.parseInt(day));
 		
-		System.out.println(now.getTime());
-		System.out.println(now.get(Calendar.DAY_OF_WEEK));
-		
-		
+		now.set(Calendar.DATE, 1);
+		int lastday = now.getActualMaximum(Calendar.DATE); 
 		System.out.println("SUN\tMON\tTUE\tWED\tTHU\tFRI\tSAT");
 		
+		int dd = 1;
+		int count = 1;
+		String[][] drr = new String[6][7];
+		for(int i = 0; i < drr.length; i++) {
+			for(int j = 0; j < drr[i].length; j++) {
+				if(count++ < now.get(Calendar.DAY_OF_WEEK)) 
+					drr[i][j] = " ";
+				else if(dd > lastday) 
+					drr[i][j] = " ";
+				else 
+					drr[i][j] = String.valueOf(dd++);
+			}
+		}
 		
-		/*int months = 0; int days = 30;
-		while(months != -1){
-			System.out.println("달을 입력하세요");
-			months = scanner.nextInt(); 
-			
-			
-			
-			if(months==1||months==3||months==5||months==7||months==8||months==10||months==12) {
-				
-				days = 31;
-				System.out.print("SU MO TU WE TH FR SA\r\n" + 
-						"--------------------\r\n" + 
-						" 1  2  3  4  5  6  7\r\n" + 
-						" 8  9 10 11 12 13 14\r\n" + 
-						"15 16 17 18 19 20 21\r\n" + 
-						"22 23 24 25 26 27 28\r\n" + 
-						"29 30 31 \n");
-			}
-			else if(months==2) {
-				System.out.print("SU MO TU WE TH FR SA\r\n" + 
-						"--------------------\r\n" + 
-						" 1  2  3  4  5  6  7\r\n" + 
-						" 8  9 10 11 12 13 14\r\n" + 
-						"15 16 17 18 19 20 21\r\n" + 
-						"22 23 24 25 26 27 28\n");
-				days = 28;
-			}
-			else if(months==-1) {
-				System.out.println("have a nice day!");
-				break;
-			}
-			else {
-				System.out.print("SU MO TU WE TH FR SA\r\n" + 
-						"--------------------\r\n" + 
-						" 1  2  3  4  5  6  7\r\n" + 
-						" 8  9 10 11 12 13 14\r\n" + 
-						"15 16 17 18 19 20 21\r\n" + 
-						"22 23 24 25 26 27 28\r\n" + 
-						"29 30");
-			}
-		}*/
-					
-			
+		for(int i = 0; i <drr.length; i++) {
+			for(int j = 0; j < drr[i].length; j++) {
+				System.out.print(drr[i][j]+"\t");
+			}System.out.println();
+		}
 	}
 }
