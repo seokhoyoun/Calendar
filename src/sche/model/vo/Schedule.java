@@ -1,17 +1,21 @@
-package sche.vo;
+package sche.model.vo;
 
-import java.util.Date;
+import java.io.Serializable;
 
-public class Schedule {
+public class Schedule implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9094521820763193567L;
 	private String title;
 	private String text;
-	private Date time;
+	private String time;
 	
 	public Schedule() {
 	}
 
-	public Schedule(String title, String text, Date time) {
+	public Schedule(String title, String text, String time) {
 		super();
 		this.title = title;
 		this.text = text;
@@ -34,11 +38,11 @@ public class Schedule {
 		this.text = text;
 	}
 
-	public Date getTime() {
+	public String getTime() {
 		return time;
 	}
 
-	public void setTime(Date time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
 
