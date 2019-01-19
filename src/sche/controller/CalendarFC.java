@@ -53,11 +53,13 @@ public class CalendarFC implements ICalendar{
 	}
 	@Override
 	public String chooseDate() {
-		String year = String.valueOf(now.get(Calendar.YEAR));
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMDD");
 		String month = String.valueOf(now.get(Calendar.MONTH)+1);
+		
 		System.out.println(month+"월 1일 부터 ~ "+now.getActualMaximum(Calendar.DATE)+"일 사이의 날짜를 입력하세요 : ");
 		int date = sc.nextInt();
-		return year+month+String.valueOf(date);
+		now.set(Calendar.DATE, date);
+		return sdf.format(now.getTime());
 	}
 
 }

@@ -1,13 +1,8 @@
 package sche.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import sche.model.vo.Schedule;
@@ -44,24 +39,23 @@ public class ScheduleFC implements ISchedule{
 	}
 
 	public void printSchedule() {
-	/*	System.out.println("일정 : "+hm.get(index).getTitle());
-		System.out.println("시간 : "+hm.get(index).getTime());
-		System.out.println("내용 : "+hm.get(index).getText());*/
-		
+	
+		ArrayList<String> keys = new ArrayList<String>();;
+		Iterator<String> it = hm.keySet().iterator();
+		while(it.hasNext()) {
+			keys.add(it.next());
+		}
+		keys.sort(new AscDate());
+		for(Iterator<String> it2 = keys.iterator(); it2.hasNext();) {
+			String key = it2.next();
+			System.out.println("TO DO : "+hm.get(key).getTitle());
+			System.out.println("TIME : "+hm.get(key).getTime());
+			System.out.println("COMMENT : "+hm.get(key).getText());
+		}
 		
 	}
 	
-	public void fileSave() {
-		System.out.println("저장할 파일 이름 : ");
-		String fTitle = sc.next();
-		try {
-			ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(fTitle+".dat")));
-			oos.writeObject(hm);
-			System.out.println(fTitle+".dat 파일 저장이 완료되었습니다.");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	
 	
 
 	

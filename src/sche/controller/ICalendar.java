@@ -2,10 +2,10 @@ package sche.controller;
 
 public interface ICalendar {
 	
-	public void printCalendar();
+	void printCalendar();
 	
-	public void switchCalendar(); 
+	void switchCalendar(); 
 	
-	public String chooseDate();
+	String chooseDate();
 	
 }
