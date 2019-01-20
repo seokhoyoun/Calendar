@@ -29,6 +29,7 @@ public class ScheduleFC implements ISchedule{
 		for(int i = 1; i < 100; i++) {
 			if(!(hm.containsKey(index+String.format("%02d", i)))) {
 				hm.put(index+String.format("%02d", i), new Schedule(title, sb.toString(),time));
+				keys.add(index+String.format("%02d", i));
 				break;
 			}
 		}
@@ -37,6 +38,22 @@ public class ScheduleFC implements ISchedule{
 
 	@Override
 	public void modifySchedule(String index) {
+		keys.sort(new AscDate());
+		for(Iterator<String> it2 = keys.iterator(); it2.hasNext();) {
+			String key = it2.next();
+			if(key.substring(0, 8).contains(index)) {
+			System.out.println("Sche. NO : " + key);
+			System.out.println("TO DO : "+hm.get(key).getTitle());
+			System.out.println("TIME : "+hm.get(key).getTime());
+			System.out.println("COMMENT : "+hm.get(key).getText()+"\n");
+			}
+		}
+		System.out.println("변경 할 일정 번호 입력 : ");
+		String mnum = sc.next();
+		if(hm.containsKey(mnum)) 
+			addSchedule(index);
+		else
+			System.out.println("해당 일정 번호는 없습니다.");
 		
 	}
 
@@ -46,11 +63,6 @@ public class ScheduleFC implements ISchedule{
 	}
 
 	public void printSchedule() {
-		
-		Iterator<String> it = hm.keySet().iterator();
-		while(it.hasNext()) {
-			keys.add(it.next());
-		}
 		keys.sort(new AscDate());
 		for(Iterator<String> it2 = keys.iterator(); it2.hasNext();) {
 			String key = it2.next();
