@@ -11,9 +11,11 @@ public class ScheduleFC implements ISchedule{
 	
 	Scanner sc = new Scanner(System.in);
 	HashMap<String,Schedule> hm = new HashMap<>();
+	ArrayList<String> keys = new ArrayList<String>();
 	
 	@Override
 	public void addSchedule(String index) {
+		
 		System.out.println("일정 제목 입력 : ");
 		String title = sc.nextLine();
 		System.out.println("일정 시간 입력 : ");
@@ -24,7 +26,12 @@ public class ScheduleFC implements ISchedule{
 		while(!(line = sc.nextLine()).equals("exit")) {
 			sb.append(line);
 		}
-		hm.put(index, new Schedule(title, sb.toString(),time));
+		for(int i = 1; i < 100; i++) {
+			if(!(hm.containsKey(index+String.format("%02d", i)))) {
+				hm.put(index+String.format("%02d", i), new Schedule(title, sb.toString(),time));
+				break;
+			}
+		}
 		
 	}
 
@@ -39,8 +46,7 @@ public class ScheduleFC implements ISchedule{
 	}
 
 	public void printSchedule() {
-	
-		ArrayList<String> keys = new ArrayList<String>();;
+		
 		Iterator<String> it = hm.keySet().iterator();
 		while(it.hasNext()) {
 			keys.add(it.next());
@@ -48,9 +54,10 @@ public class ScheduleFC implements ISchedule{
 		keys.sort(new AscDate());
 		for(Iterator<String> it2 = keys.iterator(); it2.hasNext();) {
 			String key = it2.next();
+			System.out.println("Sche. NO : " + key);
 			System.out.println("TO DO : "+hm.get(key).getTitle());
 			System.out.println("TIME : "+hm.get(key).getTime());
-			System.out.println("COMMENT : "+hm.get(key).getText());
+			System.out.println("COMMENT : "+hm.get(key).getText()+"\n");
 		}
 		
 	}
