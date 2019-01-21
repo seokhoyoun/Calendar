@@ -1,5 +1,14 @@
 package sche.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,9 +18,9 @@ import sche.model.vo.Schedule;
 
 public class ScheduleFC implements ISchedule{
 	
-	Scanner sc = new Scanner(System.in);
-	HashMap<String,Schedule> hm = new HashMap<>();
-	ArrayList<String> keys = new ArrayList<String>();
+	private Scanner sc = new Scanner(System.in);
+	private HashMap<String,Schedule> hm = new HashMap<>();
+	private ArrayList<String> keys = new ArrayList<String>();
 	
 	public Schedule putData() {
 		System.out.println("일정 제목 입력 : ");
@@ -60,6 +69,7 @@ public class ScheduleFC implements ISchedule{
 		printSchedule(index);
 		System.out.println("삭제 할 일정 번호 입력 : ");
 		String mnum = sc.next();
+		sc.nextLine();
 		if(hm.containsKey(mnum)) {
 			hm.remove(mnum);
 			keys.remove(mnum);
@@ -93,13 +103,38 @@ public class ScheduleFC implements ISchedule{
 			}
 		}
 	}
-	
-	
 
+	public void fileSave() {
+		System.out.println("저장할 파일 이름 : ");
+		String fTitle = sc.next();
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(fTitle+".dat")));
+				for(int i = 0; i < keys.size(); i++) {
+					oos.writeObject(hm.get(keys.get(i)));
+				}
+			System.out.println(fTitle+".dat 파일 저장이 완료되었습니다.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
-	
-		
-		
-	
+	public void fileLoad() {
+		System.out.println("불러올 파일 이름 : ");
+		String fTitle = sc.next();
+		try {
+			ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fTitle+".dat")));
+				HashMap<String, Schedule> hm = (HashMap<String, Schedule>) ois.readObject();
+				
+		} catch (EOFException e) {
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("파일 불러오기 성공");
+	}
 
 }
