@@ -12,6 +12,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.Scanner;
 
 import sche.model.vo.Schedule;
@@ -31,7 +33,7 @@ public class ScheduleFC implements ISchedule{
 		StringBuilder sb = new StringBuilder();
 		String line = null;
 		while(!(line = sc.nextLine()).equals("exit")) {
-			sb.append(line);
+			sb.append(line+"\n");
 		}
 		return new Schedule(title,sb.toString(),time);
 	}
@@ -107,33 +109,32 @@ public class ScheduleFC implements ISchedule{
 	public void fileSave() {
 		System.out.println("저장할 파일 이름 : ");
 		String fTitle = sc.next();
-		try {
-			ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(fTitle+".dat")));
-				for(int i = 0; i < keys.size(); i++) {
-					oos.writeObject(hm.get(keys.get(i)));
-				}
-			System.out.println(fTitle+".dat 파일 저장이 완료되었습니다.");
-		} catch (IOException e) {
-			e.printStackTrace();
+		Properties p = new Properties();
+		for(Iterator<Entry<String, Schedule>> it = hm.entrySet().iterator(); it.hasNext();) {
+			Entry<String, Schedule> ent = it.next();
+			p.setProperty(ent.getKey(), ent.getValue().toString());
 		}
+			try {
+				p.storeToXML(new BufferedOutputStream(new FileOutputStream(fTitle)),"Saved");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			System.out.println(fTitle+".xml 파일 저장이 완료되었습니다.");
+		
 	}
 	
 	public void fileLoad() {
 		System.out.println("불러올 파일 이름 : ");
 		String fTitle = sc.next();
+		Properties p = new Properties();
 		try {
-			ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fTitle+".dat")));
-				HashMap<String, Schedule> hm = (HashMap<String, Schedule>) ois.readObject();
-				
-		} catch (EOFException e) {
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			p.loadFromXML(new BufferedInputStream(new FileInputStream(fTitle)));
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+			System.out.println(p);
+		
+		
 		System.out.println("파일 불러오기 성공");
 	}
 
