@@ -2,13 +2,9 @@ package sche.controller;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.EOFException;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -107,7 +103,7 @@ public class ScheduleFC implements ISchedule{
 	}
 
 	public void fileSave() {
-		System.out.println("저장할 파일 이름 : ");
+		System.out.println("저장할 파일명 : ");
 		String fTitle = sc.next();
 		Properties p = new Properties();
 		for(Iterator<Entry<String, Schedule>> it = hm.entrySet().iterator(); it.hasNext();) {
@@ -124,7 +120,11 @@ public class ScheduleFC implements ISchedule{
 	}
 	
 	public void fileLoad() {
-		System.out.println("불러올 파일 이름 : ");
+		System.out.println("현재 저장하지 않은 일정은 다시 복구할 수 없습니다.");
+		System.out.print("그래도 계속하시겠습니까? (y/n) : ");
+		char skey = sc.next().toLowerCase().charAt(0);
+		if(skey == 'y') {
+		System.out.println("불러올 파일명 : ");
 		String fTitle = sc.next();
 		Properties p = new Properties();
 		try {
@@ -132,10 +132,16 @@ public class ScheduleFC implements ISchedule{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-			System.out.println(p);
-		
-		
+		hm.clear();
+		keys.clear();
+		for(Iterator<String> it = p.stringPropertyNames().iterator(); it.hasNext();) {
+			String key = it.next();
+			String[] values = p.getProperty(key).split("\\|",3);
+			hm.put(key, new Schedule(values[0],values[1],values[2]));
+			keys.add(key);
+		}
 		System.out.println("파일 불러오기 성공");
+	}
 	}
 
 }
